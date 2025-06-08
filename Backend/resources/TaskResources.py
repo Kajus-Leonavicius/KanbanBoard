@@ -8,10 +8,10 @@ task_bp = Blueprint('Task', 'task', url_prefix = '/task')
 
 @task_bp.route('/')
 class BoardResources(MethodView):
-    @task_bp.arguments(TaskSchema)
     @task_bp.response(200, TaskSchema(many=True))
-    def get(self, owner):
-        return TaskModel.query.filter_by(owner = owner).all()
+    def get(self,):
+        column_id = 1
+        return TaskModel.query.filter_by(column_id = column_id).all()
     
     @task_bp.arguments(TaskSchema)
     @task_bp.response(201, TaskSchema)

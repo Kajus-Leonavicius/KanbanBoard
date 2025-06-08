@@ -33,7 +33,7 @@ function Dashboard() {
         <Box>
             {data. length > 0?
                 data.map((board) =>(
-                    <BoardCard  onClick={() => navigate(`/KanbanBoard/board_id=${board.id}/board_name=${encodeURIComponent(board.name)}`)}
+                    <BoardCard  onClick={() => navigate(`/KanbanBoard/${board.id}/${encodeURIComponent(board.name)}`)}
                     key={board.id}
                     board={board}/>
                 ))

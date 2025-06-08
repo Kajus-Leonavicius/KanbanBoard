@@ -10,3 +10,4 @@ class TaskModel(db.Model):
     status = db.Column(db.String(255))
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
     created_at = db.Column(db.DateTime(timezone=True), server_default = func.now())
+    column_id = db.Column(db.Integer, db.ForeignKey('column.id'), nullable = False)

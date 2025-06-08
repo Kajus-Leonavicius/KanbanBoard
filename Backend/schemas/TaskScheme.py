@@ -8,3 +8,4 @@ class TaskSchema(Schema):
     status = fields.String(required= True)
     created_at = fields.DateTime(dump_only = True)
     created_by = fields.Int(required=True)
+    column_id = fields.Int(required=True)

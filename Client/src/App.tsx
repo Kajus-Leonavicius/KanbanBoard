@@ -7,7 +7,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Dashboard/>}/>
-        <Route path='/KanbanBoard/board_id:id/board_name:name' element={<KanbanBoard/>}/>
+        <Route path='/KanbanBoard/:board_id/:name' element={<KanbanBoard/>}/>
       </Routes>
     </BrowserRouter>
   )

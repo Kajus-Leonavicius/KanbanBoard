@@ -1,8 +1,14 @@
 import React from 'react'
+import Column from '../Components/Column'
+import TaskCard from '../Components/TaskCard'
 
 function KanbanBoard() {
   return (
-    <div>labas</div>
+    <div>
+      <Column>
+        <TaskCard/>
+      </Column>
+    </div>
   )
 }
 
