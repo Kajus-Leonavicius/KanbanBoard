@@ -13,10 +13,12 @@ class BoardResources(MethodView):
         column_id = 1
         return TaskModel.query.filter_by(column_id = column_id).all()
     
+@task_bp.route('/<int:column_id>')
+class SingleTaskResources(MethodView):
     @task_bp.arguments(TaskSchema)
     @task_bp.response(201, TaskSchema)
-    def post(self, data):
-        new_task = TaskModel(**data)
+    def post(self, data, column_id):
+        new_task = TaskModel( **data)
         db.session.add(new_task)
         db.session.commit()
         return new_task

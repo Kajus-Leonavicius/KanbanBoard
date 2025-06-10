@@ -10,6 +10,7 @@ export type Board = {
 export type Props = {
     board: Board
     onClick?: () => void
+
 }
 
 export type Columns = {
@@ -18,9 +19,22 @@ export type Columns = {
     board_id: number
 }
 
+export type ColProps = {
+    column: Columns
+}
+
 export type Task = {
     id: number
     title: string
     description:string,
     status: string
+    column_id: number
+}
+
+export type TaskProps = {
+    task: Task
+}
+
+export type ColumnId = {
+    columnId: number
 }

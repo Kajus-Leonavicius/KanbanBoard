@@ -1,53 +1,53 @@
 import { Alert, Box, Button, Typography } from '@mui/material'
-import { fetchData } from '../utils/APICalls'
+import type { ColProps } from '../Types/Types'
 import { useEffect, useState } from 'react'
-import type { Columns } from '../Types/Types'
-import { useParams } from 'react-router-dom'
+import { fetchData } from '../utils/APICalls'
+import type { Task } from '../Types/Types'
+import TaskCard from './TaskCard'
 
-function Column({children}) {
+function Column({column}: ColProps) {
 
-    const [data, setData] = useState<Columns[]> ([])
-    const {board_id} = useParams()
+const [tasks, setTask] = useState <Task[]>([])
 
     useEffect(()=>{
-            const getData = async ()=>{
-                try{
-                    const result = await fetchData<Columns[]>(`http://127.0.0.1:5000/boards/${board_id}/columns`)
-                    console.log(result)
+      const getColumns = async () =>{
+        try{
+          const result = await fetchData<Task[]>(`http://127.0.0.1:5000/task`)
+          setTask(result)
+        }catch{
+          console.log('error')
+        }
+      }
     
-                    setData(result)
-                }catch{
-                    console.log('error fetching data')
-                }
-            }
-            getData()
-        }, [board_id])
+      getColumns()
+    }, [])
   return (
-    <Box sx={{display: 'flex'}}>
-        {data.length > 0 ? 
-            data.map((column)=>(
-                <Box
-                    key={column.id}
-                    sx={{
-                        border: 'solid 1px black',
-                        width: '20rem',
-                        textAlign: 'center',
-                        height: 'auto',
-                        padding: '0.5rem',
-                        marginRight: '1rem'
-                    }}
-                >
-                <Typography variant='subtitle1'>
-                    {column.name}
-                </Typography>
-                {children}
-                <Button>Add New Task</Button>
-                </Box>
-            ))
-        : <Box>
-            <Alert severity='info'>no columns yet add one!</Alert> 
-            <Button>Add new Column</Button>
-        </Box> }
+    <Box 
+        sx={{
+            border: 'solid black 1px',
+            display: 'inline-block',
+            marginRight: '2rem',
+            maxHeight: '90vh',
+            overflowY: 'auto'
+        }}
+    >
+        <Box sx={{
+            padding: '1rem',
+            minWidth: '15rem',
+            textAlign: 'center',
+        }}>
+            <Typography variant='subtitle1'>
+                {column.name}
+            </Typography>
+            {tasks.length > 0 ? 
+                tasks
+                .filter((task) => task.column_id === column.id)
+                .map((task)=>(
+                    <TaskCard task={task}></TaskCard>
+                )): <Alert severity='info'> no tasks</Alert>
+            }
+            <Button>Add New Task</Button>
+        </Box>
     </Box>
   )
 }
