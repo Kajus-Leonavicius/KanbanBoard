@@ -24,9 +24,19 @@ class ColumnResources(MethodView):
 @column_bp.route('/columns/<int:column_id>')
 class SingleColumnResources(MethodView):
     
+    
     @column_bp.response(204)
-    def delete(self, board_id):
-        columns = ColumnModel.query.get_or_404(board_id)
+    def delete(self, column_id):
+        columns = ColumnModel.query.get_or_404(column_id)
         db.session.delete(columns)
         db.session.commit()
         return ''
+    
+    @column_bp.arguments(ColumnSchema)
+    @column_bp.response(201, ColumnSchema)
+    def put(self, updated_data, column_id):
+        column = ColumnModel.query.get_or_404(column_id)
+        for key, value in updated_data.items():
+            setattr(column, key, value)
+        db.session.commit()
+        return column

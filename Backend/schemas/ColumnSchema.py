@@ -4,4 +4,3 @@ class ColumnSchema(Schema):
     
     id = fields.Int(dump_only=True)
     name = fields.String(required=True)
-    board_id = fields.Int(required=True)

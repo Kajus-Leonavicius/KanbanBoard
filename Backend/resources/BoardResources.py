@@ -3,20 +3,25 @@ from flask.views import MethodView
 from models.BoardModel import BoardModel
 from schemas.BoardSchema import BoardSchema
 from db import db
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 Board_bp = Blueprint('Board', 'board', url_prefix = '/board')
 
 @Board_bp.route('/')
 class BoardResources(MethodView):
+    
     @Board_bp.response(200, BoardSchema(many=True))
+    @jwt_required()
     def get(self):
-        owner = 1
+        owner = int(get_jwt_identity())
         return BoardModel.query.filter_by(owner = owner).all()
     
+    @jwt_required()
     @Board_bp.arguments(BoardSchema)
     @Board_bp.response(201, BoardSchema)
     def post(self, data):
-        new_board = BoardModel(**data)
+        owner = get_jwt_identity()
+        new_board = BoardModel(**data, owner = owner)
         db.session.add(new_board)
         db.session.commit()
         return new_board

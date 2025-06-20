@@ -31,7 +31,7 @@ app.config["JWT_SECRET_KEY"] = 'super-slaptas-raktas'
 
 
 db.init_app(app)
-#jwt = JWTManager(app)
+jwt = JWTManager(app)
 migrate = Migrate(app, db)
 api = Api(app)
 

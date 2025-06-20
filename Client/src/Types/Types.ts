@@ -1,4 +1,5 @@
 import { Task } from "@mui/icons-material"
+import type { Dispatch, SetStateAction } from "react"
 
 export type Board = {
     id: number,
@@ -21,6 +22,8 @@ export type Columns = {
 
 export type ColProps = {
     column: Columns
+    onAddTaskClick: (ColumnId: number) => void
+    setColumns: Dispatch<SetStateAction<Columns[]>>
 }
 
 export type Task = {
@@ -37,4 +40,15 @@ export type TaskProps = {
 
 export type ColumnId = {
     columnId: number
+}
+
+export type TaskModalProps = {
+    task: Task
+}
+
+export type User = {
+    id: number
+    access_token: string
+    name: string
+    surname: string
 }

@@ -1,6 +1,6 @@
-import { Alert, Box, Divider, Typography } from "@mui/material"
+import { Alert, Box, Button, Divider, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
-import { fetchData } from "../utils/APICalls"
+import { fetchData, sendData } from "../utils/APICalls"
 import { useNavigate } from "react-router-dom"
 import BoardCard from "../Components/BoardCard"
 import type { Board } from "../Types/Types"
@@ -9,12 +9,13 @@ function Dashboard() {
 
 
     const [data, setData] = useState<Board[]> ([])
+
     const navigate = useNavigate()
 
-    useEffect(()=>{
-        const getData = async ()=>{
+    const getData = async ()=>{
             try{
-                const result = await fetchData<Board[]>('http://127.0.0.1:5000/board/')
+                const token = localStorage.getItem('access_token') 
+                const result = await fetchData<Board[]>('http://127.0.0.1:5000/board/', token)
                 console.log(result)
 
                 setData(result)
@@ -22,8 +23,23 @@ function Dashboard() {
                 console.log('error fetching data')
             }
         }
+
+    useEffect(()=>{
+        
         getData()
     }, [])
+
+    const addBoard = async () => {
+        try{
+            const Board = { name: 'new Board'}
+            const token = localStorage.getItem('access_token') 
+            console.log('board access token', token)
+            const result = await sendData('http://127.0.0.1:5000/board/', Board, token )
+            getData()
+        }catch (error){
+            console.log('error: ', error)
+        }
+    }
   return (
     <Box>
         <Typography variant="h4">
@@ -39,6 +55,7 @@ function Dashboard() {
                 ))
             : <Alert severity="error"> you dont gave any boards create one!</Alert>}
         </Box>
+        <Button onClick={()=> addBoard()}> + ADD NEW BOARD</Button>
     </Box>
   )
 }
